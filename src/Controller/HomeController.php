@@ -12,12 +12,12 @@ class HomeController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/home", name="home")
      */
-    public function indexAction($name)
+    public function indexAction()
     {
         $group = $this->getUser()->getCurrentGroup();
         if (!isset($group)) {
             return $this->redirectToRoute('list_groups_for_user');
         }
-        return $this->render('homepage/homepage.html.twig', array('name' => $name));
+        return $this->render('homepage/homepage.html.twig');
     }
 }

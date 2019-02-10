@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\BeerMark;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +16,7 @@ class StreepController extends Controller
      * @throws \Exception
      * @Route("/streeplijst", name = "streep_index")
      */
-    public function indexAction($name)
+    public function indexAction()
     {
         /* @var $user \App\Entity\User */
         $user = $this->getUser();
@@ -28,7 +29,7 @@ class StreepController extends Controller
 
         return $this->render('streeplijst.html.twig',
             array(
-            'name' => $name,
+            'name' => $user->getUsername(),
                 'group_name' => $groupName
         ));
     }
@@ -56,10 +57,10 @@ class StreepController extends Controller
 
     }
 
-    public function getStripeStatsAction() {
+    public function getStripeStatsAction(LoggerInterface $logger) {
 
         $amount = $this->getBeerTotalForCurrentUser();
-        $this->get('logger')->info(" amount =". $amount);
+        $logger->info(" amount =". $amount);
 
         $totalAmount = $this->getBeerTotalForCurrentGroup();
         $thisWeek = $this->getBeerTotalForLastWeek();

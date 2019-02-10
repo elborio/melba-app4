@@ -7,10 +7,11 @@ use App\Entity\Link;
 use App\Entity\Module;
 use App\Entity\User;
 use App\Form\GroupSelectorType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class NavigationController extends Controller
+class NavigationController extends AbstractController
 {
     public function indexAction($name)
     {
@@ -19,7 +20,7 @@ class NavigationController extends Controller
 
     private function getModulesActionById($groupId)
     {
-        $repo = $this->getDoctrine()->getRepository("App:Group");
+        $repo = $this->getDoctrine()->getRepository(Group::class);
         $group = $repo->find($groupId);
 
         if (!$group) {
@@ -50,7 +51,7 @@ class NavigationController extends Controller
         return $this->render('homepage/controlled_navigation.html.twig', array('links' => $links));
     }
 
-    public function getModulesByUserAction() {
+    public function getModulesByUser() {
         $user = $this->getUser();
         $group = $user->getCurrentGroup();
 

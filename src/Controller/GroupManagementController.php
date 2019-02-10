@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,16 +18,17 @@ class GroupManagementController extends Controller
      */
     public function showGroupManageAction() {
 
+        $users = $this->listUsers();
 
-
-        return $this->render('manage.html.twig', array());
+        return $this->render('manage.html.twig',[
+            'users' => $users,
+        ]);
     }
 
-    public function listUsersAction() {
+    public function listUsers() {
 
-        $users = $this->getDoctrine()->getRepository("App:User")->getUsersInGroup($this->getUser()->getCurrentGroup());
+        $users = $this->getDoctrine()->getRepository(User::class)->getUsersInGroup($this->getUser()->getCurrentGroup());
 
-
-        return $this->render('user_table.html.twig', array('table_rows' => $users));
+        return $users;
     }
 }

@@ -5,11 +5,10 @@ namespace App\Controller;
 use App\Entity\Group;
 use App\Entity\User;
 use App\Form\GroupSelectorType;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Tests\Extension\Core\Type\SubmitTypeTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -85,7 +84,7 @@ class GroupSelectionController extends Controller
      * @param $group integer
      * @return Response
      */
-    public function setGroupAction($group)
+    public function setGroupAction(Group $group)
     {
 
         /* @var $user User */
@@ -97,13 +96,13 @@ class GroupSelectionController extends Controller
 
 
         foreach ($groupsArray as $g) {
-            $this->get('logger')->info("Message ". $g->getId(). " and " . $group. " expression is " .($g->getId() == $group));
-            if ($g->getId() == $group) {
+            //$logger->info("Message ". $g->getId(). " and " . $group. " expression is " .($g->getId() == $group));
+            if ($g->getId() == $group->getId()) {
                 $user->setCurrentGroup($g);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
-                $this->get('logger')->info("Message ". $user->getCurrentGroup()->getName());
+                //$logger->info("Message ". $user->getCurrentGroup()->getName());
                 return $this->render('homepage/homepage.html.twig', array());
             }
         }
